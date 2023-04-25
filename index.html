@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Build Link Example</title>
+    <style>
+        body {
+          font-family: sans-serif;
+          margin: 0;
+          padding: 0;
+        }
+        h1 {
+          margin-top: 0;
+        }
+        form {
+          display: flex;
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 8px;
+          padding: 16px;
+          background-color: #f8f8f8;
+          border: 1px solid #ccc;
+          border-radius: 4px;
+          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        label {
+          font-weight: bold;
+        }
+        input[type="text"], input[type="checkbox"], button {
+          font-size: 16px;
+          padding: 8px;
+          border-radius: 4px;
+          border: 1px solid #ccc;
+        }
+        button {
+          background-color: #007bff;
+          color: #fff;
+          border-color: #007bff;
+          cursor: pointer;
+        }
+        button:hover {
+          background-color: #0069d9;
+          border-color: #0062cc;
+        }
+        #link-container {
+          margin-top: 16px;
+          padding: 16px;
+          background-color: #f8f8f8;
+          border: 1px solid #ccc;
+          border-radius: 4px;
+          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        #link-container a {
+          color: #007bff;
+        }
+      </style>
+  </head>
+  <body>
+    <h1>Build Link Example</h1>
+    <form>
+      <label for="base-url">Base URL:</label>
+      <input type="text" id="base-url" name="base-url"><br><br>
+      <label for="tenancy-name">Tenancy Name:</label>
+      <input type="text" id="tenancy-name" name="tenancy-name"><br><br>
+      <label for="invitation-id">Invitation ID:</label>
+      <input type="text" id="invitation-id" name="invitation-id"><br><br>
+      <label for="is-ssl">Use SSL:</label>
+      <input type="checkbox" id="is-ssl" name="is-ssl"><br><br>
+      <button type="button" onclick="buildLink()">Build Link</button>
+    </form>
+    <br>
+    <p id="link-container"></p>
+    <script>
+      function buildLink() {
+        const baseURL = document.getElementById("base-url").value;
+        const tenancyName = document.getElementById("tenancy-name").value;
+        const invitationId = document.getElementById("invitation-id").value;
+        const isSSL = document.getElementById("is-ssl").checked;
+        const linkUrl = buildInviteUrl(baseURL, tenancyName, invitationId, isSSL);
+        const linkElement = document.createElement("a");
+        linkElement.href = linkUrl;
+        linkElement.textContent = linkUrl;
+        linkElement.target = "_blank"; // open link in new tab
+        const linkContainer = document.getElementById("link-container");
+        while (linkContainer.firstChild) {
+          linkContainer.removeChild(linkContainer.firstChild);
+        }
+        linkContainer.appendChild(linkElement);
+      }
+
+      function buildInviteUrl(baseURL, tenancyName, invitationId, isSSL) {
+        const protocol = isSSL ? 'https' : 'http';
+        return `${protocol}://${tenancyName}.${baseURL}/account/accept-invitation?invitationId=${invitationId}`;
+      }
+    </script>
+  </body>
+</html>
